@@ -12,8 +12,8 @@ class Testcase {
     this.name = name;
     this.dbName = dbName;
     this.findQuery = findQuery.filter;
-    this.modelName = modelName.modelName;
-    this.schemeGen = schemeGen.schemeGen;
+    this.modelName = findQuery.modelName;
+    this.schemeGen = findQuery.schemeGen;
     this.enableSharding = enableSharding;
   }
 
@@ -22,7 +22,7 @@ class Testcase {
       useNewUrlParser: true,
       dbName: this.dbName, // Tên database
     });
-    const scheme = schemeGen(this.enableSharding);
+    const scheme = this.schemeGen(this.enableSharding);
     let elapsedTime = 0;
     let avgTime = 0;
     scheme.pre("find", function () {
@@ -33,7 +33,7 @@ class Testcase {
         elapsedTime = Date.now() - elapsedTime;
       }
     });
-    const model = mongoose.model(modelName);
+    const model = mongoose.model(this.modelName);
 
     for (let i = 0; i < n; i++) {
       let result = await model.find(this.findQuery);

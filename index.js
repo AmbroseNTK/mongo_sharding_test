@@ -29,8 +29,13 @@ const Testcase = require("./testcase");
   }
 
   for (let test of tests) {
-    let avgTime = await test.run(CONNECTION_STRING, 5);
-    console.log("-----------------------------------------------------");
-    console.log(`${test.name} - ${avgTime}`);
+    try {
+      let avgTime = await test.run(CONNECTION_STRING, 5);
+      console.log("-----------------------------------------------------");
+      console.log(`${test.name} - ${avgTime}`);
+    } catch (err) {
+      console.error(`Test ${test.name} failed! Cause:`);
+      console.error(err);
+    }
   }
 })();
